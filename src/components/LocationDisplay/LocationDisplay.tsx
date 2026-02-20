@@ -7,9 +7,10 @@ import styles from './LocationDisplay.module.css'
 interface Props {
   location: Location
   isLoading?: boolean
+  onChangeLocation?: () => void
 }
 
-export function LocationDisplay({ location, isLoading }: Props) {
+export function LocationDisplay({ location, isLoading, onChangeLocation }: Props) {
   const [copied, setCopied] = useState(false)
 
   const mapUrl = `https://tile.openstreetmap.org/10/${Math.floor((location.longitude + 180) / 3.6)}/${Math.floor((location.latitude + 90) / 1.8)}.png`
@@ -59,6 +60,11 @@ export function LocationDisplay({ location, isLoading }: Props) {
         <button className={styles.shareButton} onClick={handleShare}>
           {copied ? t('shareCopied') : t('share')}
         </button>
+        {onChangeLocation && (
+          <button className={styles.shareButton} onClick={onChangeLocation}>
+            {t('changeLocation')}
+          </button>
+        )}
       </div>
     </div>
   )

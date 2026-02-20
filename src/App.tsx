@@ -28,6 +28,29 @@ interface UseForecastDataResult {
   setSelectedDate: (date: Date) => void
   setSelectedSpecies: (species: FishSpecies | null) => void
   setLocation: (location: Location) => void
+  resetLocation: () => void
+}
+
+const STORAGE_KEY = 'fishing_forecast_location'
+
+function getStoredLocation(): Location | null {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored) {
+      return JSON.parse(stored) as Location
+    }
+  } catch {
+    // ignore
+  }
+  return null
+}
+
+function storeLocation(location: Location): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(location))
+  } catch {
+    // ignore
+  }
 }
 
 function getLocationFromParams(): Location | null {
@@ -81,11 +104,23 @@ function useForecastData(): UseForecastDataResult {
       getLocationName(urlLocation.latitude, urlLocation.longitude).then((name) => {
         const loc = { ...urlLocation, name }
         setLocation(loc)
+        storeLocation(loc)
         loadData(loc, selectedDate, selectedSpecies)
         setLocationLoading(false)
       })
     } else {
-      setLocationLoading(false)
+      const stored = getStoredLocation()
+      if (stored) {
+        setLocationLoading(true)
+        getLocationName(stored.latitude, stored.longitude).then((name) => {
+          const loc = { ...stored, name }
+          setLocation(loc)
+          loadData(loc, selectedDate, selectedSpecies)
+          setLocationLoading(false)
+        })
+      } else {
+        setLocationLoading(false)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -100,8 +135,18 @@ function useForecastData(): UseForecastDataResult {
 
   const handleSetLocation = useCallback((loc: Location) => {
     setLocation(loc)
+    storeLocation(loc)
     loadData(loc, selectedDate, selectedSpecies)
   }, [selectedDate, selectedSpecies, loadData])
+
+  const handleResetLocation = useCallback(() => {
+    setLocation(null)
+    try {
+      localStorage.removeItem(STORAGE_KEY)
+    } catch {
+      // ignore
+    }
+  }, [])
 
   useEffect(() => {
     if (location) {
@@ -123,6 +168,7 @@ function useForecastData(): UseForecastDataResult {
     setSelectedDate,
     setSelectedSpecies,
     setLocation: handleSetLocation,
+    resetLocation: handleResetLocation,
   }
 }
 
@@ -140,6 +186,7 @@ function App() {
     setSelectedDate,
     setSelectedSpecies,
     setLocation,
+    resetLocation,
   } = useForecastData()
 
   if (locationLoading) {
@@ -194,7 +241,7 @@ function App() {
           <LanguageSelector />
         </div>
 
-        <LocationDisplay location={location} isLoading={locationLoading} />
+        <LocationDisplay location={location} isLoading={locationLoading} onChangeLocation={resetLocation} />
 
         <DateSelector selectedDate={selectedDate} onDateChange={setSelectedDate} />
 

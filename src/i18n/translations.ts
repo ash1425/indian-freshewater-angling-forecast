@@ -57,6 +57,7 @@ export const translations = {
     enterLocation: 'Enter town or village name',
     search: 'Search',
     locationName: 'Location Name',
+    changeLocation: 'Change',
   },
   hi: {
     appTitle: 'मछली पूर्वानुमान भारत',
@@ -116,6 +117,7 @@ export const translations = {
     enterLocation: 'गाँव या कस्बे का नाम दर्ज करें',
     search: 'खोजें',
     locationName: 'स्थान का नाम',
+    changeLocation: 'बदलें',
   },
   mr: {
     appTitle: 'मासेमारी अंदाज भारत',
@@ -175,6 +177,7 @@ export const translations = {
     enterLocation: 'गाव किंवा शहराचे नाव भरा',
     search: 'शोधा',
     locationName: 'ठिकाणाचे नाव',
+    changeLocation: 'बदला',
   },
 } as const
 
