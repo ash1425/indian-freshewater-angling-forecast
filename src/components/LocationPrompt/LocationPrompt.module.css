@@ -30,6 +30,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s ease;
+  pointer-events: auto;
 }
 
 .primaryButton:hover:not(:disabled) {

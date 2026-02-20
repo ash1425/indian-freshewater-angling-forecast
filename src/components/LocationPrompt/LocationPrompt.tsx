@@ -52,23 +52,49 @@ export function LocationPrompt({ onLocationSelect }: Props) {
   const handleAllowLocation = async () => {
     setLoading(true)
     setError('')
+    
+    if (!navigator.geolocation) {
+      setError('Geolocation is not supported on this device')
+      setLoading(false)
+      return
+    }
+    
     try {
-      const position = await new Promise<{ coords: { latitude: number; longitude: number } }>((resolve, reject) => {
-        if (!navigator.geolocation) {
-          reject(new Error('Geolocation is not supported'))
-          return
-        }
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
-          enableHighAccuracy: true,
-          timeout: 10000,
-        })
+      console.log('Requesting location permission...')
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            console.log('Location obtained:', pos.coords)
+            resolve(pos)
+          },
+          (err) => {
+            console.error('Geolocation error:', err)
+            reject(err)
+          },
+          { enableHighAccuracy: true, timeout: 15000 }
+        )
       })
 
       const { latitude, longitude } = position.coords
       const name = await getLocationName(latitude, longitude)
       onLocationSelect({ latitude, longitude, name })
-    } catch {
-      setError(t('locationRequired'))
+    } catch (err) {
+      console.error('Location error:', err)
+      let message: string
+      if (err instanceof GeolocationPositionError) {
+        if (err.code === 1) {
+          message = 'Location permission denied. Please allow location access or search manually.'
+        } else if (err.code === 2) {
+          message = 'Location unavailable. Please search manually.'
+        } else {
+          message = 'Location request timed out. Please try again or search manually.'
+        }
+      } else if (err instanceof Error && err.message.includes('secure origins')) {
+        message = 'Location requires HTTPS. Please search for your location manually.'
+      } else {
+        message = 'Unable to get location. Please search manually.'
+      }
+      setError(message)
     } finally {
       setLoading(false)
     }
