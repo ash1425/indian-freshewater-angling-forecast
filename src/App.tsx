@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { fetchWeatherData, fetchHourlyWeatherData } from './services/weather.ts'
 import { calculateFishingForecast, calculateHourlyForecasts } from './services/fishingForecast.ts'
-import { getCurrentLocation, DEFAULT_LOCATION, getLocationName, type Location } from './services/location.ts'
+import { getLocationName, type Location } from './services/location.ts'
 import { WeatherDisplay } from './components/WeatherDisplay/index.ts'
 import { FishingForecast } from './components/FishingForecast/index.ts'
 import { DateSelector } from './components/DateSelector/index.ts'
 import { LocationDisplay } from './components/LocationDisplay/index.ts'
+import { LocationPrompt } from './components/LocationPrompt/index.ts'
 import { FishingForecastGraph } from './components/FishingForecastGraph/FishingForecastGraph.tsx'
 import { LanguageSelector } from './components/LanguageSelector/index.ts'
 import { Footer } from './components/Footer/Footer.tsx'
@@ -15,7 +16,7 @@ import styles from './App.module.css'
 import { Analytics } from '@vercel/analytics/react';
 
 interface UseForecastDataResult {
-  location: Location
+  location: Location | null
   selectedDate: Date
   selectedSpecies: FishSpecies | null
   weather: WeatherData | null
@@ -26,6 +27,7 @@ interface UseForecastDataResult {
   locationLoading: boolean
   setSelectedDate: (date: Date) => void
   setSelectedSpecies: (species: FishSpecies | null) => void
+  setLocation: (location: Location) => void
 }
 
 function getLocationFromParams(): Location | null {
@@ -43,7 +45,7 @@ function getLocationFromParams(): Location | null {
 }
 
 function useForecastData(): UseForecastDataResult {
-  const [location, setLocation] = useState<Location>(DEFAULT_LOCATION)
+  const [location, setLocation] = useState<Location | null>(null)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [selectedSpecies, setSelectedSpecies] = useState<FishSpecies | null>(null)
   const [weather, setWeather] = useState<WeatherData | null>(null)
@@ -51,7 +53,7 @@ function useForecastData(): UseForecastDataResult {
   const [hourlyForecasts, setHourlyForecasts] = useState<HourlyFishingForecast[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [locationLoading, setLocationLoading] = useState(false)
+  const [locationLoading, setLocationLoading] = useState(true)
 
   const loadData = useCallback(async (loc: Location, date: Date, species: FishSpecies | null) => {
     try {
@@ -73,30 +75,18 @@ function useForecastData(): UseForecastDataResult {
   }, [])
 
   useEffect(() => {
-    setLocationLoading(true)
-
     const urlLocation = getLocationFromParams()
     if (urlLocation) {
+      setLocationLoading(true)
       getLocationName(urlLocation.latitude, urlLocation.longitude).then((name) => {
         const loc = { ...urlLocation, name }
         setLocation(loc)
         loadData(loc, selectedDate, selectedSpecies)
         setLocationLoading(false)
       })
-      return
+    } else {
+      setLocationLoading(false)
     }
-
-    getCurrentLocation()
-      .then((loc) => {
-        setLocation(loc)
-        loadData(loc, selectedDate, selectedSpecies)
-      })
-      .catch(() => {
-        loadData(DEFAULT_LOCATION, selectedDate, selectedSpecies)
-      })
-      .finally(() => {
-        setLocationLoading(false)
-      })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -108,8 +98,15 @@ function useForecastData(): UseForecastDataResult {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSpecies])
 
+  const handleSetLocation = useCallback((loc: Location) => {
+    setLocation(loc)
+    loadData(loc, selectedDate, selectedSpecies)
+  }, [selectedDate, selectedSpecies, loadData])
+
   useEffect(() => {
-    loadData(location, selectedDate, selectedSpecies)
+    if (location) {
+      loadData(location, selectedDate, selectedSpecies)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location, selectedDate])
 
@@ -125,6 +122,7 @@ function useForecastData(): UseForecastDataResult {
     locationLoading,
     setSelectedDate,
     setSelectedSpecies,
+    setLocation: handleSetLocation,
   }
 }
 
@@ -141,13 +139,32 @@ function App() {
     locationLoading,
     setSelectedDate,
     setSelectedSpecies,
+    setLocation,
   } = useForecastData()
+
+  if (locationLoading) {
+    return (
+      <div className={styles.container}>
+        <h1 className={styles.title}>{t('appTitle')}</h1>
+        <p className={styles.loading}>{t('loading')}</p>
+      </div>
+    )
+  }
+
+  if (!location) {
+    return (
+      <div className={styles.container}>
+        <h1 className={styles.title}>{t('appTitle')}</h1>
+        <LocationPrompt onLocationSelect={setLocation} />
+      </div>
+    )
+  }
 
   if (loading && !weather) {
     return (
       <div className={styles.container}>
         <h1 className={styles.title}>{t('appTitle')}</h1>
-        <p className={styles.loading}>{locationLoading ? t('gettingLocation') : t('loading')}</p>
+        <p className={styles.loading}>{t('loading')}</p>
       </div>
     )
   }

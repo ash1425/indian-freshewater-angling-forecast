@@ -53,7 +53,12 @@ vi.mock('./services/location.ts')
 
 describe('App', () => {
   beforeEach(() => {
-    vi.mocked(locationModule.getCurrentLocation).mockRejectedValue(new Error('Location not available'))
+    const url = new URL('http://localhost/?lat=18.6435&lon=73.8983')
+    Object.defineProperty(window, 'location', {
+      value: url,
+      writable: true,
+    })
+    vi.mocked(locationModule.getLocationName).mockResolvedValue('Nande, Pune')
     vi.mocked(weatherModule.fetchWeatherData).mockResolvedValue(mockWeather)
     vi.mocked(weatherModule.fetchHourlyWeatherData).mockResolvedValue([])
     vi.mocked(fishingModule.calculateFishingForecast).mockReturnValue(mockForecast)
@@ -63,7 +68,7 @@ describe('App', () => {
   it('renders the main heading', async () => {
     render(<App />)
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: 'Fishing Forecast' })).toBeDefined()
+      expect(screen.getByRole('heading', { name: 'Fishing Forecast India' })).toBeDefined()
     })
   })
 
