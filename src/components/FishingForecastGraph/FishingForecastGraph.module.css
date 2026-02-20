@@ -1,0 +1,109 @@
+.container {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.container:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(180deg, #8b5cf6, #6366f1);
+  border-radius: 2px;
+}
+
+graph {
+  width: 100%;
+  height: 200px;
+}
+
+.axisLabel {
+  font-size: 10px;
+  fill: #64748b;
+}
+
+.gridLine {
+  stroke: rgba(226, 232, 240, 0.5);
+  stroke-width: 1;
+}
+
+.bar {
+  fill: #22c55e;
+  transition: fill 0.2s;
+}
+
+.bar:hover {
+  fill: #16a34a;
+}
+
+.barPoor {
+  fill: #ef4444;
+}
+
+.barFair {
+  fill: #f97316;
+}
+
+.barGood {
+  fill: #84cc16;
+}
+
+.barExcellent {
+  fill: #22c55e;
+}
+
+.tooltip {
+  position: absolute;
+  background: rgba(15, 23, 42, 0.95);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 100;
+  white-space: nowrap;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.yAxis {
+  stroke: #cbd5e1;
+  stroke-width: 1;
+}
+
+.xAxis {
+  stroke: #cbd5e1;
+  stroke-width: 1;
+}
+
+.noData {
+  text-align: center;
+  color: #94a3b8;
+  padding: 40px;
+}

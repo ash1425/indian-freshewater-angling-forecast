@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.button {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid rgba(203, 213, 225, 0.6);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+  color: #64748b;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  border-color: #6366f1;
+  color: #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.button.selected {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-color: transparent;
+  color: white;
+  font-weight: 500;
+}

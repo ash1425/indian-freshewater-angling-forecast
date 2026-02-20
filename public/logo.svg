@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="fishGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="50%" style="stop-color:#d97706"/>
+      <stop offset="100%" style="stop-color:#b45309"/>
+    </linearGradient>
+    <linearGradient id="scaleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Fish body - Mahseer torpedo shape -->
+  <ellipse cx="50" cy="50" rx="35" ry="18" fill="url(#fishGrad)"/>
+  
+  <!-- Tail -->
+  <path d="M85 50 L95 35 L95 65 Z" fill="#d97706"/>
+  <path d="M85 50 L92 40 L92 60 Z" fill="#f59e0b"/>
+  
+  <!-- Dorsal fin -->
+  <path d="M45 32 Q55 20 65 32" fill="#b45309" stroke="#d97706" stroke-width="1"/>
+  
+  <!-- Pectoral fin -->
+  <path d="M35 55 Q25 60 35 68" fill="#b45309"/>
+  
+  <!-- Scales pattern -->
+  <g fill="url(#scaleGrad)" opacity="0.6">
+    <circle cx="40" cy="45" r="4"/>
+    <circle cx="50" cy="42" r="4"/>
+    <circle cx="60" cy="45" r="4"/>
+    <circle cx="45" cy="52" r="4"/>
+    <circle cx="55" cy="55" r="4"/>
+    <circle cx="65" cy="52" r="3.5"/>
+    <circle cx="50" cy="60" r="3"/>
+    <circle cx="60" cy="60" r="3"/>
+  </g>
+  
+  <!-- Eye -->
+  <circle cx="28" cy="48" r="5" fill="white"/>
+  <circle cx="29" cy="48" r="2.5" fill="#1e293b"/>
+  <circle cx="30" cy="47" r="1" fill="white"/>
+  
+  <!-- Mouth -->
+  <path d="M15 50 Q20 53 15 56" stroke="#92400e" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- Whisker (barbel) - characteristic of Mahseer -->
+  <path d="M18 54 Q10 58 8 62" stroke="#d97706" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  
+  <!-- Highlight -->
+  <ellipse cx="45" cy="42" rx="15" ry="5" fill="white" opacity="0.2"/>
+</svg>
