@@ -33,6 +33,7 @@ export interface WeatherData {
   sunset: string
   moonPhase: number
   moonIllumination: number
+  hourly?: HourlyWeatherData[]
 }
 
 export type FishSpecies = 'tilapia' | 'barb' | 'calbasu' | 'otherCarps'

@@ -98,6 +98,10 @@ export function calculateFishingForecast(
     Math.round(conditionsScore * 0.5 + baitRigScore * 0.5) - realismPenalty
   ))
 
+  const hourlyForecasts = weather.hourly
+    ? calculateHourlyForecasts(weather.hourly, weather.sunrise, weather.sunset)
+    : undefined
+
   return {
     overallRating,
     temperatureScore: tempResult.score,
@@ -105,7 +109,7 @@ export function calculateFishingForecast(
     windScore: windResult.score,
     moonScore: moonResult.score,
     sunScore: cloudResult.score,
-    bestTimeOfDay: getBestFishingTimes(weather.sunrise, weather.sunset, weather.pressure),
+    bestTimeOfDay: getBestFishingTimes(weather.sunrise, weather.sunset, weather.pressure, hourlyForecasts),
     suggestedBaits,
     suggestedRigs,
     bestCombos,

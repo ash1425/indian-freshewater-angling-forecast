@@ -66,7 +66,7 @@ export async function fetchWeatherData(location: Location, date: Date): Promise<
   url.searchParams.set('latitude', latitude.toString())
   url.searchParams.set('longitude', longitude.toString())
   url.searchParams.set('daily', 'temperature_2m_max,temperature_2m_min,relative_humidity_2m_mean,pressure_msl_mean,wind_speed_10m_max,wind_direction_10m_dominant,cloud_cover_mean,precipitation_sum,uv_index_max,sunrise,sunset')
-  url.searchParams.set('hourly', 'pressure_msl')
+  url.searchParams.set('hourly', 'temperature_2m,relative_humidity_2m,pressure_msl,wind_speed_10m,wind_direction_10m,cloud_cover,precipitation')
   url.searchParams.set('timezone', 'Asia/Kolkata')
 
   if (daysFromNow >= 0) {
@@ -85,24 +85,24 @@ export async function fetchWeatherData(location: Location, date: Date): Promise<
 
   const index = daysFromNow >= 0 ? daysFromNow : data.daily.time.length + daysFromNow
 
-  const hourlyPressureData: HourlyWeatherData[] = []
-  if (data.hourly?.pressure_msl) {
+  const hourlyData: HourlyWeatherData[] = []
+  if (data.hourly?.temperature_2m) {
     for (let i = 0; i < data.hourly.time.length; i++) {
-      hourlyPressureData.push({
+      hourlyData.push({
         time: data.hourly.time[i],
-        temperature: 25,
-        humidity: 60,
+        temperature: data.hourly.temperature_2m[i] ?? 25,
+        humidity: data.hourly.relative_humidity_2m[i] ?? 60,
         pressure: data.hourly.pressure_msl[i] ?? 1013,
-        windSpeed: 10,
-        windDirection: 180,
-        cloudCover: 30,
-        precipitation: 0,
+        windSpeed: data.hourly.wind_speed_10m[i] ?? 10,
+        windDirection: data.hourly.wind_direction_10m[i] ?? 180,
+        cloudCover: data.hourly.cloud_cover[i] ?? 30,
+        precipitation: data.hourly.precipitation[i] ?? 0,
         uvIndex: 5,
       })
     }
   }
 
-  const pressureTrend = calculatePressureTrend(hourlyPressureData)
+  const pressureTrend = calculatePressureTrend(hourlyData)
 
   return {
     temperature: data.daily.temperature_2m_max[index] ?? data.daily.temperature_2m_min[index] ?? 25,
@@ -118,6 +118,7 @@ export async function fetchWeatherData(location: Location, date: Date): Promise<
     sunset: data.daily.sunset[index],
     moonPhase: phase,
     moonIllumination: illumination,
+    hourly: hourlyData,
   }
 }
 

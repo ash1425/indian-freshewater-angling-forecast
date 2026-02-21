@@ -5,19 +5,19 @@ export interface ScoreResult {
 }
 
 export function calculateTemperatureScore(temp: number): ScoreResult {
-  if (temp >= 25 && temp <= 30) {
+  if (temp >= 25 && temp <= 35) {
     return { score: 100, label: 'Optimal', description: 'Perfect temperature for fishing activity' }
   }
   if (temp >= 20 && temp < 25) {
     return { score: 75, label: 'Good', description: 'Good fishing conditions' }
   }
-  if (temp >= 30 && temp < 33) {
+  if (temp >= 35 && temp < 38) {
     return { score: 70, label: 'Warm', description: 'Fish are active but seek cooler water' }
   }
   if (temp >= 15 && temp < 20) {
     return { score: 55, label: 'Cool', description: 'Fish metabolism slowing down' }
   }
-  if (temp >= 33 && temp < 37) {
+  if (temp >= 38 && temp < 40) {
     return { score: 40, label: 'Hot', description: 'Fish seek deeper, cooler water' }
   }
   if (temp >= 10 && temp < 15) {
@@ -27,7 +27,7 @@ export function calculateTemperatureScore(temp: number): ScoreResult {
 }
 
 export function getTemperatureAdvice(temp: number): string {
-  if (temp > 35) return 'Very hot - fish early morning or late evening only'
+  if (temp > 38) return 'Very hot - fish early morning or late evening only'
   if (temp < 15) return 'Cold weather - slow down your presentation'
   return ''
 }

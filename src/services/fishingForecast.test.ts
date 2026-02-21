@@ -185,7 +185,7 @@ describe('calculateFishingForecast', () => {
     })
 
     it('adds note for very hot temperature', () => {
-      const weather = createMockWeather({ temperature: 38 })
+      const weather = createMockWeather({ temperature: 39 })
       const result = calculateFishingForecast(weather, 'otherCarps')
       expect(result.notes.some(n => n.includes('Very hot'))).toBe(true)
     })
