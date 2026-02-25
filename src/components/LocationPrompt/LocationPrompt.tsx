@@ -60,17 +60,10 @@ export function LocationPrompt({ onLocationSelect }: Props) {
     }
     
     try {
-      console.log('Requesting location permission...')
       const position = await new Promise<GeolocationPosition>((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            console.log('Location obtained:', pos.coords)
-            resolve(pos)
-          },
-          (err) => {
-            console.error('Geolocation error:', err)
-            reject(err)
-          },
+          resolve,
+          reject,
           { enableHighAccuracy: true, timeout: 15000 }
         )
       })
@@ -79,7 +72,6 @@ export function LocationPrompt({ onLocationSelect }: Props) {
       const name = await getLocationName(latitude, longitude)
       onLocationSelect({ latitude, longitude, name })
     } catch (err) {
-      console.error('Location error:', err)
       let message: string
       if (err instanceof GeolocationPositionError) {
         if (err.code === 1) {

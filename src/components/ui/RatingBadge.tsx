@@ -1,3 +1,4 @@
+import { t } from '../../i18n/useTranslation.ts'
 import styles from './RatingBadge.module.css'
 
 interface RatingBadgeProps {
@@ -14,10 +15,10 @@ function getRatingColor(rating: number): string {
 }
 
 function getRatingLabel(rating: number): string {
-  if (rating >= 80) return 'Excellent'
-  if (rating >= 60) return 'Good'
-  if (rating >= 40) return 'Fair'
-  return 'Poor'
+  if (rating >= 80) return t('excellent')
+  if (rating >= 60) return t('good')
+  if (rating >= 40) return t('fair')
+  return t('poor')
 }
 
 export function RatingBadge({ rating, showLabel = true, size = 'medium' }: RatingBadgeProps) {

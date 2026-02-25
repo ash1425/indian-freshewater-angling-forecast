@@ -86,10 +86,3 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.scoreValue {
-  width: 30px;
-  text-align: right;
-  font-size: 13px;
-  font-weight: 600;
-  color: #334155;
-}

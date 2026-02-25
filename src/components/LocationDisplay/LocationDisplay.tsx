@@ -13,7 +13,11 @@ interface Props {
 export function LocationDisplay({ location, isLoading, onChangeLocation }: Props) {
   const [copied, setCopied] = useState(false)
 
-  const mapUrl = `https://tile.openstreetmap.org/10/${Math.floor((location.longitude + 180) / 3.6)}/${Math.floor((location.latitude + 90) / 1.8)}.png`
+  const zoom = 10
+  const tileX = Math.floor((location.longitude + 180) / 360 * Math.pow(2, zoom))
+  const latRad = location.latitude * Math.PI / 180
+  const tileY = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * Math.pow(2, zoom))
+  const mapUrl = `https://tile.openstreetmap.org/${zoom}/${tileX}/${tileY}.png`
 
   const handleShare = async () => {
     const url = new URL(window.location.href)

@@ -193,7 +193,10 @@ function App() {
     return (
       <div className={styles.container}>
         <h1 className={styles.title}>{t('appTitle')}</h1>
-        <p className={styles.loading}>{t('loading')}</p>
+        <div className={styles.loadingWrapper}>
+          <div className={styles.spinner} />
+          <p className={styles.loading}>{t('loading')}</p>
+        </div>
       </div>
     )
   }
@@ -211,7 +214,10 @@ function App() {
     return (
       <div className={styles.container}>
         <h1 className={styles.title}>{t('appTitle')}</h1>
-        <p className={styles.loading}>{t('loading')}</p>
+        <div className={styles.loadingWrapper}>
+          <div className={styles.spinner} />
+          <p className={styles.loading}>{t('loading')}</p>
+        </div>
       </div>
     )
   }

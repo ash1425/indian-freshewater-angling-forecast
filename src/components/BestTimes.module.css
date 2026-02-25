@@ -28,8 +28,36 @@
   font-size: 13px;
   color: #444;
   border-left: 3px solid #f59e0b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .item:last-child {
   margin-bottom: 0;
+}
+
+.item::before {
+  content: '🕐';
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.item:first-child {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.25), rgba(245, 158, 11, 0.15));
+  border-left-color: #d97706;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.item:first-child::before {
+  content: '🥇';
+}
+
+.item:nth-child(2)::before {
+  content: '🥈';
+}
+
+.item:nth-child(3)::before {
+  content: '🥉';
 }
