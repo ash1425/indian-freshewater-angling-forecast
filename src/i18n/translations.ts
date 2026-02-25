@@ -1,6 +1,6 @@
 export const translations = {
   en: {
-    appTitle: 'Fishing Forecast India',
+    appTitle: 'Freshwater Fishing Forecast India',
     location: 'Location',
     coordinates: 'Coordinates',
     date: 'Date',
@@ -60,7 +60,7 @@ export const translations = {
     changeLocation: 'Change',
   },
   hi: {
-    appTitle: 'मछली पूर्वानुमान भारत',
+    appTitle: 'मीठे पानी की मछली पूर्वानुमान भारत',
     location: 'स्थान',
     coordinates: 'निर्देशांक',
     date: 'तारीख',
@@ -120,7 +120,7 @@ export const translations = {
     changeLocation: 'बदलें',
   },
   mr: {
-    appTitle: 'मासेमारी अंदाज भारत',
+    appTitle: 'गोड्या पाण्यातील मासेमारी अंदाज भारत',
     location: 'ठिकाण',
     coordinates: 'सहनिर्देशक',
     date: 'तारीख',

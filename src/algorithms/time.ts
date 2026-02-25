@@ -5,15 +5,24 @@ export interface TimeMultiplier {
   multiplier: number
 }
 
+// Tuned for tropical India:
+// - Early morning (sunrise to +3 hrs): strongest feeding window, coolest temps
+// - Evening (sunset -2 to sunset +1): second peak, temps dropping rapidly
+// - Midday (10:00–15:00): severe slump – tropical heat pushes fish deep;
+//   multiplier dropped from 0.90 to 0.75 to reflect Indian summer reality
+// - Late afternoon (15:00 to sunset -2): recovery window as temps ease
 export function getTimeMultiplier(hour: number, sunrise: number, sunset: number): TimeMultiplier {
   if (hour >= sunrise && hour < sunrise + 3) {
-    return { label: 'Early Morning', multiplier: 1.15 }
+    return { label: 'Early Morning', multiplier: 1.20 }
   }
   if (hour >= sunset - 2 && hour <= sunset + 1) {
-    return { label: 'Evening', multiplier: 1.10 }
+    return { label: 'Evening', multiplier: 1.15 }
   }
-  if (hour >= 10 && hour < 14) {
-    return { label: 'Midday', multiplier: 0.90 }
+  if (hour >= 10 && hour < 15) {
+    return { label: 'Midday', multiplier: 0.75 }
+  }
+  if (hour >= 15 && hour < sunset - 2) {
+    return { label: 'Afternoon', multiplier: 0.95 }
   }
   return { label: 'Normal', multiplier: 1.0 }
 }
@@ -97,6 +106,7 @@ function getBestTimesFromHourly(
 function getTimeLabel(hour: number, sunrise: number, sunset: number): string {
   if (hour >= sunrise && hour < sunrise + 3) return 'Early Morning'
   if (hour >= sunset - 2 && hour <= sunset + 1) return 'Evening'
-  if (hour >= 10 && hour < 14) return 'Midday'
+  if (hour >= 10 && hour < 15) return 'Midday'
+  if (hour >= 15 && hour < sunset - 2) return 'Afternoon'
   return 'Day'
 }
